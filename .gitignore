@@ -216,3 +216,26 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ===============================
+# Deepfake Project
+# ===============================
+
+# AI datasets (do not upload)
+ai/data/
+
+# Trained AI models
+ai/saved_models/
+*.pth
+*.pt
+*.h5
+*.keras
+
+# User uploads
+backend/uploads/
+
+# Generated reports (if generated at runtime)
+backend/reports/
+
+# VS Code settings (optional)
+.vscode/
