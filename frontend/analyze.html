@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detection Platform</title>
+    <!-- Connects to frontend/css/style.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/analyze.css') }}">
+</head>
+<body>
+
+    <div class="main-container">
+        <h1>Deepfake Intelligence Analyzer</h1>
+        <p>Upload media to scan for artificial generation artifacts.</p>
+        
+        <form id="uploadForm">
+            <input type="file" id="fileInput" name="file" accept="image/*" required>
+            <button type="submit" id="submitBtn">Run Analysis</button>
+        </form>
+
+        <div id="resultsCard" class="hidden">
+            <h3>Diagnostic Report</h3>
+            <p id="outputStatus"></p>
+        </div>
+    </div>
+
+    <!-- Connects to frontend/js/main.js -->
+    <script src="{{ url_for('static', filename='js/analyze.js') }}"></script>
+</body>
+</html>
