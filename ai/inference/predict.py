@@ -96,3 +96,4 @@ if __name__ == "__main__":
         print(f"Probabilities -> Fake: {probs[0]*100:.2f}% | Real: {probs[1]*100:.2f}%\n")
     except Exception as e:
         print(f"❌ Error during inference: {e}")
+
