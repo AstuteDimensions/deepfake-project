@@ -1,0 +1,437 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+
+body{
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    radial-gradient(circle at top,#16213e,#050816);
+
+    color:white;
+
+    overflow:hidden;
+
+}
+
+
+/* Animated background */
+
+.background span{
+
+    position:absolute;
+
+    width:250px;
+    height:250px;
+
+    border-radius:50%;
+
+    background:
+    linear-gradient(
+        135deg,
+        #00e5ff,
+        #7b2cff
+    );
+
+    filter:blur(80px);
+
+    animation:float 8s infinite alternate;
+
+}
+
+
+.background span:nth-child(1){
+
+    top:10%;
+    left:10%;
+
+}
+
+
+.background span:nth-child(2){
+
+    bottom:15%;
+    right:10%;
+
+    animation-delay:2s;
+
+}
+
+
+.background span:nth-child(3){
+
+    top:50%;
+    left:50%;
+
+    animation-delay:4s;
+
+}
+
+
+
+@keyframes float{
+
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(80px);
+    }
+
+}
+
+
+
+.container{
+
+    width:90%;
+    max-width:1100px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:40px;
+
+    z-index:2;
+
+}
+
+
+
+/* Branding */
+
+.brand{
+
+    width:45%;
+
+}
+
+
+.logo{
+
+    width:80px;
+    height:80px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    linear-gradient(
+        135deg,
+        #00e5ff,
+        #7b2cff
+    );
+
+    border-radius:25px;
+
+    font-size:35px;
+
+    margin-bottom:25px;
+
+    box-shadow:
+    0 0 40px #00e5ff;
+
+}
+
+
+
+.brand h1{
+
+    font-size:48px;
+
+    margin-bottom:20px;
+
+}
+
+
+.brand p{
+
+    color:#b8c2d9;
+
+    line-height:1.7;
+
+    font-size:18px;
+
+}
+
+
+
+/* Login card */
+
+
+.login-card{
+
+    width:420px;
+
+    padding:40px;
+
+    background:
+    rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:25px;
+
+    border:
+    1px solid rgba(255,255,255,.15);
+
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,.4);
+
+}
+
+
+
+.login-card h2{
+
+    text-align:center;
+
+    font-size:32px;
+
+}
+
+
+.subtitle{
+
+    text-align:center;
+
+    color:#b5bfd8;
+
+    margin:10px 0 30px;
+
+}
+
+
+
+
+.input-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    background:
+    rgba(255,255,255,.1);
+
+    padding:15px;
+
+    border-radius:15px;
+
+    margin-bottom:18px;
+
+}
+
+
+
+.input-box input{
+
+    flex:1;
+
+    background:none;
+
+    border:none;
+
+    outline:none;
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+
+
+.input-box i{
+
+    color:#00e5ff;
+
+}
+
+
+
+
+.options{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:14px;
+
+    margin-bottom:25px;
+
+}
+
+
+.options a,
+.signup a{
+
+    color:#00e5ff;
+
+    text-decoration:none;
+
+}
+
+
+
+.login-btn{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:15px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-size:17px;
+
+    font-weight:600;
+
+
+    background:
+    linear-gradient(
+        135deg,
+        #00e5ff,
+        #7b2cff
+    );
+
+
+    transition:.3s;
+
+}
+
+
+.login-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 10px 30px #00e5ff;
+
+}
+
+
+
+
+.divider{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin:25px 0;
+
+    color:#aaa;
+
+}
+
+
+
+.divider span{
+
+    flex:1;
+
+    height:1px;
+
+    background:#555;
+
+}
+
+
+
+.social{
+
+    width:100%;
+
+    padding:14px;
+
+    border-radius:15px;
+
+    background:white;
+
+    color:#111;
+
+    border:none;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+}
+
+
+
+.signup{
+
+    text-align:center;
+
+    margin-top:25px;
+
+    color:#bbb;
+
+}
+
+
+
+/* Mobile */
+
+@media(max-width:850px){
+
+
+.container{
+
+    flex-direction:column;
+
+    text-align:center;
+
+}
+
+
+.brand{
+
+    width:100%;
+
+}
+
+
+.brand h1{
+
+    font-size:38px;
+
+}
+
+
+.login-card{
+
+    width:100%;
+
+    max-width:420px;
+
+}
+
+
+}
