@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepGuard AI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb);
+    color:white;
+}
+
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 8%;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:bold;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+}
+
+.hero{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    align-items:center;
+    padding:70px 8%;
+}
+
+.hero-text{
+    max-width:550px;
+}
+
+.hero h1{
+    font-size:55px;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:18px;
+    line-height:1.7;
+    margin-bottom:30px;
+}
+
+.btn{
+    display:inline-block;
+    padding:15px 30px;
+    background:#38bdf8;
+    color:white;
+    border-radius:50px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn:hover{
+    background:white;
+    color:#2563eb;
+}
+.awareness-btn{
+    margin-left:15px;
+    background:#f59e0b;
+}
+
+.awareness-btn:hover{
+    background:white;
+    color:#f59e0b;
+}
+@media(max-width:768px){
+
+.awareness-btn{
+    display:block;
+    margin:15px auto 0;
+}
+
+}
+
+.hero img{
+    width:450px;
+    max-width:100%;
+}
+
+.features{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+    padding:70px 8%;
+}
+
+.card{
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(10px);
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+.card h2{
+    margin:15px 0;
+}
+
+.upload{
+    padding:70px 8%;
+    text-align:center;
+}
+
+.upload-box{
+    border:3px dashed white;
+    border-radius:20px;
+    padding:50px;
+    margin-top:30px;
+}
+
+input[type=file]{
+    margin:20px;
+    color:white;
+}
+
+button{
+    padding:15px 35px;
+    border:none;
+    border-radius:50px;
+    background:#38bdf8;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:white;
+    color:#2563eb;
+}
+
+footer{
+    padding:30px;
+    text-align:center;
+    background:#0f172a;
+}
+
+@media(max-width:768px){
+.hero{
+flex-direction:column;
+text-align:center;
+}
+
+.hero h1{
+font-size:38px;
+}
+
+.hero img{
+margin-top:40px;
+}
+}
+</style>
+
+</head>
+<body>
+
+<header>
+
+<div class="logo">🛡 DeepGuard AI</div>
+
+<nav>
+<a href="dashboard.html">Home</a>
+<a href="awareness.html">Awareness</a>
+<a href="#upload">Upload</a>
+<a href="#">Contact</a>
+</nav>
+
+</header>
+
+<section class="hero">
+
+<div class="hero-text">
+
+<h1>Detect Deepfake Images Instantly</h1>
+
+<p>
+Upload an image and let AI analyze it for manipulation,
+reverse search similar images, and generate a detailed report.
+</p>
+
+<a href="#upload" class="btn">Get Started</a>
+
+<a href="awareness.html" class="btn awareness-btn">
+Learn About Deepfakes
+</a>
+
+</div>
+
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800" alt="AI">
+
+</section>
+
+<section class="features">
+
+<div class="card">
+<h2>🤖 AI Detection</h2>
+<p>Advanced AI detects manipulated and fake images.</p>
+</div>
+
+<div class="card">
+<h2>🔍 Reverse Search</h2>
+<p>Search for similar images across the internet.</p>
+</div>
+
+<div class="card">
+<h2>📄 Evidence Report</h2>
+<p>Download a professional analysis report.</p>
+</div>
+
+<div class="card">
+<h2>🔒 Privacy</h2>
+<p>Your uploaded images remain secure.</p>
+</div>
+
+</section>
+
+<section class="upload" id="upload">
+
+<h1>Upload Your Image</h1>
+
+<div class="upload-box">
+
+<input type="file">
+
+<br>
+
+<button>Analyze Image</button>
+
+</div>
+
+</section>
+
+<footer>
+
+<h3>DeepGuard AI</h3>
+
+<p>AI Powered Deepfake Detection System</p>
+
+<br>
+
+<p>© 2026 All Rights Reserved</p>
+
+</footer>
+
+</body>
+</html>
