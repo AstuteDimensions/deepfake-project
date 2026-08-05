@@ -7,7 +7,3 @@ CREATE TABLE users (
     last_login TIMESTAMP NULL
 );
 
-INSERT INTO users (username, email, password_hash)
-VALUES
-('Aiswarya', 'aiswarya@gmail.com', '123456'),
-('Rahul', 'rahul@gmail.com', 'abcdef');
