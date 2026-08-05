@@ -1,0 +1,1052 @@
+/* ==========================================
+   DeepGuard AI
+   style.css (Part 1)
+========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    min-height:100vh;
+
+    background:#071321;
+
+    color:#fff;
+
+    overflow-x:hidden;
+
+    position:relative;
+
+}
+
+/* ==========================================
+   Animated Background
+========================================== */
+
+.background{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:-5;
+
+    overflow:hidden;
+
+    background:
+    radial-gradient(circle at top,#132743,#050814);
+
+}
+
+.background span{
+
+    position:absolute;
+
+    width:350px;
+    height:350px;
+
+    border-radius:50%;
+
+    filter:blur(100px);
+
+    opacity:.28;
+
+    background:
+    linear-gradient(
+        135deg,
+        #00d9ff,
+        #6f2dff
+    );
+
+    animation:float 14s infinite alternate ease-in-out;
+
+}
+
+.background span:nth-child(1){
+
+    top:-120px;
+    left:-80px;
+
+}
+
+.background span:nth-child(2){
+
+    bottom:-120px;
+    right:-120px;
+
+    animation-delay:3s;
+
+}
+
+.background span:nth-child(3){
+
+    top:40%;
+    left:45%;
+
+    animation-delay:6s;
+
+}
+
+@keyframes float{
+
+    from{
+
+        transform:
+        translate(0,0)
+        scale(1);
+
+    }
+
+    to{
+
+        transform:
+        translate(80px,-70px)
+        scale(1.15);
+
+    }
+
+}
+
+/* ==========================================
+   Main Container
+========================================== */
+
+.container{
+
+    width:94%;
+
+    max-width:1450px;
+
+    min-height:100vh;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:60% 40%;
+
+    gap:45px;
+
+    align-items:center;
+
+    padding:40px 0;
+
+}
+
+/* ==========================================
+   Hero Section
+========================================== */
+
+.hero{
+
+    position:relative;
+
+    min-height:760px;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    align-items:flex-end;
+
+    padding:60px;
+
+    background:
+
+    linear-gradient(
+
+        rgba(5,12,25,.35),
+
+        rgba(5,12,25,.82)
+
+    ),
+
+    url("vault-bg.png");
+
+    background-size:cover;
+
+    background-position:center;
+
+    box-shadow:
+    0 25px 70px rgba(0,0,0,.45);
+
+}
+
+/* ==========================================
+   Overlay
+========================================== */
+
+.hero-overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+    linear-gradient(
+
+        to right,
+
+        rgba(4,10,22,.86),
+
+        rgba(4,10,22,.52),
+
+        rgba(4,10,22,.22)
+
+    );
+
+}
+
+/* ==========================================
+   Hero Content
+========================================== */
+
+.hero-content{
+
+    position:relative;
+
+    z-index:2;
+
+    max-width:620px;
+
+}
+
+/* ==========================================
+   Brand
+========================================== */
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    margin-bottom:75px;
+
+}
+
+.logo{
+
+    width:80px;
+
+    height:80px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:22px;
+
+    font-size:34px;
+
+    background:
+
+    linear-gradient(
+
+        135deg,
+
+        #00d9ff,
+
+        #6f2dff
+
+    );
+
+    box-shadow:
+
+    0 0 40px rgba(0,217,255,.45);
+
+}
+
+.brand h2{
+
+    font-size:34px;
+
+    font-weight:700;
+
+}
+
+.brand p{
+
+    color:#b3c5dd;
+
+    margin-top:6px;
+
+}
+
+/* ==========================================
+   Main Heading
+========================================== */
+
+.hero h1{
+
+    font-size:74px;
+
+    font-weight:800;
+
+    line-height:1.05;
+
+    letter-spacing:1px;
+
+    margin-bottom:250px;
+
+}
+
+.hero h1 span{
+
+    color:#00d9ff;
+
+}
+
+/* ==========================================
+   Description
+========================================== */
+
+.description{
+
+    position:absolute;
+
+    left:60px;
+
+    bottom:55px;
+
+    width:500px;
+
+}
+
+.description p{
+
+    color:#d6dfec;
+
+    line-height:1.9;
+
+    font-size:18px;
+
+}
+
+/* ==========================================
+   Soft Hero Glow
+========================================== */
+
+.hero::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:520px;
+
+    height:520px;
+
+    background:#00d9ff;
+
+    filter:blur(180px);
+
+    opacity:.08;
+
+    left:-180px;
+
+    top:80px;
+
+    pointer-events:none;
+
+}
+
+/* ==========================================
+   LOGIN CARD
+========================================== */
+
+.login-card{
+
+    position:relative;
+
+    width:100%;
+    max-width:460px;
+
+    margin:auto;
+
+    padding:45px 40px;
+
+    background:rgba(10,18,35,.78);
+
+    backdrop-filter:blur(22px);
+
+    border:1px solid rgba(255,255,255,.10);
+
+    border-radius:28px;
+
+    box-shadow:
+    0 25px 70px rgba(0,0,0,.45);
+
+    overflow:hidden;
+
+}
+
+.login-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:320px;
+    height:320px;
+
+    top:-120px;
+    right:-120px;
+
+    border-radius:50%;
+
+    background:#00d9ff;
+
+    filter:blur(140px);
+
+    opacity:.08;
+
+    z-index:-1;
+
+}
+
+.login-card h2{
+
+    text-align:center;
+
+    font-size:34px;
+
+    margin-bottom:10px;
+
+    font-weight:700;
+
+}
+
+.subtitle{
+
+    text-align:center;
+
+    color:#a7bbd5;
+
+    margin-bottom:35px;
+
+    font-size:15px;
+
+}
+
+
+/* ==========================================
+   INPUT BOXES
+========================================== */
+
+.input-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:17px 18px;
+
+    margin-bottom:18px;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.06);
+
+    border:1px solid transparent;
+
+    transition:.3s;
+
+}
+
+.input-box:focus-within{
+
+    border-color:#00d9ff;
+
+    box-shadow:
+    0 0 18px rgba(0,217,255,.25);
+
+}
+
+.input-box i{
+
+    color:#00d9ff;
+
+    font-size:16px;
+
+}
+
+.input-box input{
+
+    flex:1;
+
+    background:none;
+
+    border:none;
+
+    outline:none;
+
+    color:#fff;
+
+    font-size:15px;
+
+}
+
+.input-box input::placeholder{
+
+    color:#8ca5c7;
+
+}
+
+#togglePassword{
+
+    cursor:pointer;
+
+}
+
+
+/* ==========================================
+   OPTIONS
+========================================== */
+
+.options{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin:8px 0 28px;
+
+    font-size:14px;
+
+}
+
+.options label{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#b4c5dc;
+
+}
+
+.options input{
+
+    accent-color:#00d9ff;
+
+}
+
+.options a{
+
+    color:#00d9ff;
+
+    text-decoration:none;
+
+}
+
+.options a:hover{
+
+    text-decoration:underline;
+
+}
+
+
+/* ==========================================
+   LOGIN BUTTON
+========================================== */
+
+.login-btn{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #00d9ff,
+        #6f2dff
+    );
+
+    transition:.3s;
+
+}
+
+.login-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 15px 35px rgba(0,217,255,.35);
+
+}
+
+
+/* ==========================================
+   DIVIDER
+========================================== */
+
+.divider{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin:28px 0;
+
+    color:#97abc7;
+
+}
+
+.divider span{
+
+    flex:1;
+
+    height:1px;
+
+    background:rgba(255,255,255,.10);
+
+}
+
+
+/* ==========================================
+   GOOGLE BUTTON
+========================================== */
+
+.social{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    background:white;
+
+    color:#111;
+
+    font-size:15px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    transition:.3s;
+
+}
+
+.social:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.social i{
+
+    color:#db4437;
+
+}
+
+
+/* ==========================================
+   SIGN UP
+========================================== */
+
+.signup{
+
+    margin-top:28px;
+
+    text-align:center;
+
+    color:#a7bbd5;
+
+}
+
+.signup a{
+
+    color:#00d9ff;
+
+    text-decoration:none;
+
+    font-weight:500;
+
+}
+
+.signup a:hover{
+
+    text-decoration:underline;
+
+}
+
+/* ==========================================
+   BOTTOM FEATURE BAR
+========================================== */
+
+.bottom-bar{
+
+    width:94%;
+
+    max-width:1450px;
+
+    margin:-10px auto 35px;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:18px;
+
+}
+
+.feature,
+.quote{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:18px 20px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.06);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    transition:.3s;
+
+}
+
+.feature:hover,
+.quote:hover{
+
+    transform:translateY(-4px);
+
+    border-color:rgba(0,217,255,.35);
+
+    box-shadow:0 12px 30px rgba(0,217,255,.12);
+
+}
+
+.feature i,
+.quote i{
+
+    font-size:22px;
+
+    color:#00d9ff;
+
+}
+
+.feature h4{
+
+    font-size:16px;
+
+    margin-bottom:4px;
+
+}
+
+.feature p,
+.quote p{
+
+    color:#b6c7dd;
+
+    font-size:14px;
+
+    line-height:1.5;
+
+}
+
+/* ==========================================
+   LINKS
+========================================== */
+
+a{
+
+    transition:.25s;
+
+}
+
+a:hover{
+
+    color:#66ecff;
+
+}
+
+/* ==========================================
+   BUTTON STATES
+========================================== */
+
+button{
+
+    font-family:inherit;
+
+}
+
+button:disabled{
+
+    opacity:.7;
+
+    cursor:not-allowed;
+
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#071321;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#00d9ff;
+
+    border-radius:10px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#33e3ff;
+
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+========================================== */
+
+@media(max-width:1200px){
+
+    .container{
+
+        grid-template-columns:1fr;
+
+        gap:50px;
+
+        padding:35px 0;
+
+    }
+
+    .hero{
+
+        min-height:650px;
+
+    }
+
+    .hero-content{
+
+        max-width:100%;
+
+    }
+
+    .hero h1{
+
+        font-size:58px;
+
+        margin-bottom:180px;
+
+    }
+
+    .description{
+
+        position:static;
+
+        width:100%;
+
+        margin-top:35px;
+
+    }
+
+    .login-card{
+
+        max-width:520px;
+
+    }
+
+    .bottom-bar{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .container{
+
+        width:92%;
+
+    }
+
+    .hero{
+
+        min-height:520px;
+
+        padding:35px;
+
+        align-items:flex-end;
+
+    }
+
+    .brand{
+
+        margin-bottom:40px;
+
+    }
+
+    .logo{
+
+        width:65px;
+
+        height:65px;
+
+        font-size:28px;
+
+    }
+
+    .brand h2{
+
+        font-size:28px;
+
+    }
+
+    .hero h1{
+
+        font-size:42px;
+
+        margin-bottom:70px;
+
+    }
+
+    .description{
+
+        margin-top:20px;
+
+    }
+
+    .description p{
+
+        font-size:16px;
+
+    }
+
+    .login-card{
+
+        padding:35px 28px;
+
+    }
+
+    .bottom-bar{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .hero{
+
+        padding:25px;
+
+    }
+
+    .hero h1{
+
+        font-size:34px;
+
+    }
+
+    .login-card{
+
+        padding:28px 22px;
+
+    }
+
+    .login-card h2{
+
+        font-size:28px;
+
+    }
+
+    .subtitle{
+
+        font-size:14px;
+
+    }
+
+    .feature,
+    .quote{
+
+        padding:16px;
+
+    }
+
+}
+
+/* ==========================================
+   END OF FILE
+========================================== */
