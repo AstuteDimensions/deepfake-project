@@ -1,130 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeepGuard AI | Deepfake Detector</title>
 
-    <link rel="stylesheet" href="style.css">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>DeepGuard AI</title>
+
+    <link rel="stylesheet"
+    href="login.css">
 
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 </head>
 
 <body>
 
-    <div class="background">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
+<div class="background">
 
+    <span></span>
 
-    <main class="container">
+    <span></span>
 
-        <section class="brand">
+    <span></span>
+
+</div>
+
+<div class="main-panel">
+
+    <div class="overlay"></div>
+
+    <!-- LEFT SIDE -->
+
+    <section class="hero">
+
+        <div class="brand">
+
             <div class="logo">
+
                 <i class="fa-solid fa-shield-halved"></i>
+
             </div>
 
-            <h1>DeepGuard AI</h1>
+            <div>
+
+                <h2>DeepGuard <span>AI</span></h2>
+
+                <p>DEEPFAKE DETECTION PLATFORM</p>
+
+            </div>
+
+        </div>
+
+        <div class="hero-text">
+
+            <h1>
+
+                SECURE THE
+
+                <br>
+
+                TRUTH.
+
+                <br>
+
+                <span>DETECT</span> THE FAKE.
+
+            </h1>
 
             <p>
-                Advanced AI-powered deepfake detection platform.
-                Detect manipulated images, videos and media with confidence.
-            </p>
-        </section>
 
+                Advanced AI technology to identify manipulated
+                media and protect information integrity with
+                intelligent real-time detection.
 
-        <section class="login-card">
-
-            <h2>Welcome Back</h2>
-            <p class="subtitle">
-                Login to access your detection dashboard
             </p>
 
+        </div>
 
-            <form id="loginForm">
+    </section>
 
-                <div class="input-box">
-                    <i class="fa-solid fa-user"></i>
-                    <input 
-                        type="text"
-                        placeholder="Username"
-                        required>
-                </div>
+    <!-- LOGIN -->
 
+    <section class="login-card">
 
-                <div class="input-box">
+        <h2>
 
-                    <i class="fa-solid fa-lock"></i>
+            Welcome <span>Back</span>
 
-                    <input 
-                        id="password"
-                        type="password"
-                        placeholder="Password"
-                        required>
+        </h2>
 
-                    <i 
-                        class="fa-solid fa-eye"
-                        id="togglePassword">
-                    </i>
+        <p class="subtitle">
 
-                </div>
+            Sign in to your DeepGuard AI account
 
+        </p>
 
-                <div class="options">
+        <form id="loginForm">
 
-                    <label>
-                        <input type="checkbox">
-                        Remember me
-                    </label>
+            <div class="input-box">
 
-                    <a href="#">
-                        Forgot password?
-                    </a>
+                <i class="fa-regular fa-user"></i>
 
-                </div>
+                <input
 
+                type="text"
 
-                <button class="login-btn">
-                    Sign In
-                </button>
+                placeholder="Username or Email"
 
+                required>
 
-                <div class="divider">
-                    <span></span>
-                    OR
-                    <span></span>
-                </div>
+            </div>
 
+            <div class="input-box">
 
-                <button type="button" class="social">
-                    <i class="fa-brands fa-google"></i>
-                    Continue with Google
-                </button>
+                <i class="fa-solid fa-lock"></i>
 
+                <input
 
-                <p class="signup">
-                    Don't have an account?
-                    <a href="#">
-                        Create Account
-                    </a>
+                id="password"
+
+                type="password"
+
+                placeholder="Password"
+
+                required>
+
+                <i
+
+                class="fa-solid fa-eye"
+
+                id="togglePassword">
+
+                </i>
+
+            </div>
+
+            <div class="options">
+
+                <label>
+
+                    <input type="checkbox">
+
+                    Remember me
+
+                </label>
+
+                <a href="#">
+
+                    Forgot password?
+
+                </a>
+
+            </div>
+
+            <button
+
+            type="submit"
+
+            class="login-btn">
+
+                Sign In
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+            <div class="divider">
+
+                <span></span>
+
+                OR
+
+                <span></span>
+
+            </div>
+                        <button
+            type="button"
+            class="social">
+
+                <i class="fa-brands fa-google"></i>
+
+                Continue with Google
+
+            </button>
+
+            <p class="signup">
+
+                Don't have an account?
+
+                <a href="#">
+
+                    Create Account
+
+                </a>
+
+            </p>
+
+        </form>
+
+    </section>
+
+    <!-- BOTTOM FEATURE BAR -->
+
+    <section class="bottom-bar">
+
+        <div class="feature">
+
+            <i class="fa-solid fa-brain"></i>
+
+            <div>
+
+                <h4>AI Powered</h4>
+
+                <p>
+
+                    Advanced deep learning
+                    models
+
                 </p>
 
+            </div>
 
-            </form>
+        </div>
 
-        </section>
+        <div class="feature">
 
+            <i class="fa-solid fa-shield-halved"></i>
 
-    </main>
+            <div>
 
+                <h4>Privacy First</h4>
 
-<script src="script.js"></script>
+                <p>
+
+                    Your data is secure
+                    and encrypted
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <i class="fa-solid fa-bolt"></i>
+
+            <div>
+
+                <h4>Real-time Analysis</h4>
+
+                <p>
+
+                    Get instant results with
+                    high precision
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="quote">
+
+            <i class="fa-solid fa-quote-left"></i>
+
+            <p>
+
+                In a world of synthetic media,
+                truth needs a guardian.
+
+            </p>
+
+            <i class="fa-solid fa-quote-right"></i>
+
+        </div>
+
+    </section>
+
+</div>
+
+<script src="login.js"></script>
 
 </body>
+
 </html>
