@@ -1,3 +1,4 @@
+javascript
 const form = document.getElementById("registerForm");
 
 const password = document.getElementById("password");
@@ -50,17 +51,28 @@ if (form) {
                 })
             });
 
-            const data = await response.json();
+            let data;
+
+            try {
+                data = await response.json();
+            } catch (jsonError) {
+                data = {
+                    message: "Database is temporarily unavailable. Please try again later."
+                };
+            }
 
             if (response.ok) {
 
-                alert("Account created successfully!");
+                alert(data.message || "Account created successfully!");
 
                 window.location.href = "/frontend/homepage/login.html";
 
             } else {
 
-                alert(data.message || "Registration failed.");
+                alert(
+                    data.message ||
+                    "Database is temporarily unavailable. Please try again later."
+                );
 
                 button.disabled = false;
                 button.innerHTML =
@@ -69,7 +81,9 @@ if (form) {
 
         } catch (error) {
 
-            alert("Unable to connect to the server.");
+            alert(
+                "Database is temporarily unavailable. Please try again later."
+            );
 
             button.disabled = false;
             button.innerHTML =
@@ -78,3 +92,4 @@ if (form) {
 
     });
 }
+

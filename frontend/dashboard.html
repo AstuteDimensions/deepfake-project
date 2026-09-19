@@ -76,6 +76,7 @@ nav a{
     background:white;
     color:#2563eb;
 }
+
 .awareness-btn{
     margin-left:15px;
     background:#f59e0b;
@@ -85,12 +86,13 @@ nav a{
     background:white;
     color:#f59e0b;
 }
+
 @media(max-width:768px){
 
-.awareness-btn{
-    display:block;
-    margin:15px auto 0;
-}
+    .awareness-btn{
+        display:block;
+        margin:15px auto 0;
+    }
 
 }
 
@@ -162,22 +164,25 @@ footer{
 }
 
 @media(max-width:768px){
-.hero{
-flex-direction:column;
-text-align:center;
-}
 
-.hero h1{
-font-size:38px;
-}
+    .hero{
+        flex-direction:column;
+        text-align:center;
+    }
 
-.hero img{
-margin-top:40px;
-}
+    .hero h1{
+        font-size:38px;
+    }
+
+    .hero img{
+        margin-top:40px;
+    }
+
 }
 </style>
 
 </head>
+
 <body>
 
 <header>
@@ -185,10 +190,17 @@ margin-top:40px;
 <div class="logo">🛡 DeepGuard AI</div>
 
 <nav>
+
 <a href="dashboard.html">Home</a>
+
 <a href="awareness.html">Awareness</a>
+
 <a href="#upload">Upload</a>
+
+<a href="audit.html">Audit Logs</a>
+
 <a href="#">Contact</a>
+
 </nav>
 
 </header>
@@ -212,30 +224,52 @@ Learn About Deepfakes
 
 </div>
 
-<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800" alt="AI">
+<img
+src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800"
+alt="AI">
 
 </section>
 
 <section class="features">
 
 <div class="card">
+
 <h2>🤖 AI Detection</h2>
-<p>Advanced AI detects manipulated and fake images.</p>
+
+<p>
+Advanced AI detects manipulated and fake images.
+</p>
+
 </div>
 
 <div class="card">
+
 <h2>🔍 Reverse Search</h2>
-<p>Search for similar images across the internet.</p>
+
+<p>
+Search for similar images across the internet.
+</p>
+
 </div>
 
 <div class="card">
+
 <h2>📄 Evidence Report</h2>
-<p>Download a professional analysis report.</p>
+
+<p>
+Download a professional analysis report.
+</p>
+
 </div>
 
 <div class="card">
+
 <h2>🔒 Privacy</h2>
-<p>Your uploaded images remain secure.</p>
+
+<p>
+Your uploaded images remain secure.
+</p>
+
 </div>
 
 </section>
@@ -246,11 +280,20 @@ Learn About Deepfakes
 
 <div class="upload-box">
 
-<input type="file" id="dashboardFile" accept="image/*">
+<input
+type="file"
+id="dashboardFile"
+accept="image/*">
 
 <br>
 
-<button type="button" id="analyzeBtn">Analyze Image</button>
+<button
+type="button"
+id="analyzeBtn">
+
+Analyze Image
+
+</button>
 
 </div>
 
@@ -260,251 +303,421 @@ Learn About Deepfakes
 
 <h3>DeepGuard AI</h3>
 
-<p>AI Powered Deepfake Detection System</p>
+<p>
+AI Powered Deepfake Detection System
+</p>
 
 <br>
 
-<p>© 2026 All Rights Reserved</p>
+<p>
+© 2026 All Rights Reserved
+</p>
 
 </footer>
+
 <script>
-const dashboardFile = document.getElementById("dashboardFile");
-const analyzeBtn = document.getElementById("analyzeBtn");
+
+const dashboardFile =
+    document.getElementById("dashboardFile");
+
+const analyzeBtn =
+    document.getElementById("analyzeBtn");
+
 
 if (analyzeBtn) {
 
-    analyzeBtn.addEventListener("click", async () => {
+    analyzeBtn.addEventListener(
+        "click",
+        async () => {
 
-        if (!dashboardFile.files.length) {
-            alert("Please select an image first.");
-            return;
-        }
+            if (!dashboardFile.files.length) {
 
-        const file = dashboardFile.files[0];
-
-        const formData = new FormData();
-        formData.append("file", file);
-
-        analyzeBtn.disabled = true;
-        analyzeBtn.innerText = "Analyzing...";
-
-        try {
-
-            const response = await fetch("/api/analyze", {
-                method: "POST",
-                body: formData
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(
-                    data.error || "Analysis failed."
+                alert(
+                    "Please select an image first."
                 );
+
+                return;
+
             }
 
-            let resultBox =
-                document.getElementById("analysisResult");
 
-            if (!resultBox) {
+            const file =
+                dashboardFile.files[0];
 
-                resultBox =
-                    document.createElement("div");
 
-                resultBox.id =
-                    "analysisResult";
+            const formData =
+                new FormData();
 
-                resultBox.style.marginTop = "30px";
-                resultBox.style.padding = "25px";
-                resultBox.style.borderRadius = "18px";
-                resultBox.style.background =
-                    "rgba(255,255,255,.12)";
-                resultBox.style.textAlign = "left";
+            formData.append(
+                "file",
+                file
+            );
 
-                document
-                    .querySelector(".upload-box")
-                    .appendChild(resultBox);
-            }
 
-            resultBox.innerHTML = `
-                <h2>🔎 Analysis Result</h2>
+            analyzeBtn.disabled = true;
 
-                <p>
-                    <strong>File:</strong>
-                    ${data.filename}
-                </p>
+            analyzeBtn.innerText =
+                "Analyzing...";
 
-                <p>
-                    <strong>Status:</strong>
-                    ${
-                        data.is_fake
-                        ? "⚠️ Deepfake Detected"
-                        : "✅ Authentic"
-                    }
-                </p>
 
-                <p>
-                    <strong>Confidence:</strong>
-                    ${data.confidence}
-                </p>
+            try {
 
-                <p>
-                    <strong>Details:</strong>
-                    ${data.details}
-                </p>
-                <hr style="margin:25px 0; opacity:0.3;">
-
-                <h3>🌐 Reverse Image Search</h3>
-
-                <p>
-                <strong>Matches Found:</strong>
-                ${data.reverse_search.matches_found}
-                </p>
-
-                <p>
-                <strong>Digital Footprint:</strong>
-                ${data.reverse_search.digital_footprint}
-                </p>
-                ${data.reverse_search.sources.length > 0
-    ? `
-        <h4>Places Where This Image Was Found</h4>
-
-        ${data.reverse_search.sources.map((source, index) => `
-            <div style="
-                margin:15px 0;
-                padding:15px;
-                border-radius:10px;
-                background:rgba(255,255,255,.08);
-            ">
-
-                <strong>${index + 1}. ${source.title}</strong>
-
-                <p>
-                    Source: ${source.source}
-                </p>
-
-                <a
-                    href="${source.link}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style="color:#8ec5ff;"
-                >
-                    🔗 Open Source
-                </a>
-
-                </div>
-                        `).join("")}
-                    `
-                    : `
-                        <p>
-                            No matching sources were found.
-                        </p>
-                    `
-                }
-                <button
-                    type="button"
-                    id="reportBtn"
-                    style="
-                        margin-top:20px;
-                        padding:12px 20px;
-                        border:none;
-                        border-radius:10px;
-                        cursor:pointer;
-                    "
-                >
-                    📄 Generate Analysis Report
-                </button>
-            `;
-
-            const reportBtn =
-                document.getElementById("reportBtn");
-
-            reportBtn.addEventListener("click", async () => {
-
-                reportBtn.disabled = true;
-                reportBtn.innerText =
-                    "Generating Report...";
-
-                try {
-
-                    const reportResponse =
-                        await fetch("/api/report", {
+                const response =
+                    await fetch(
+                        "/api/analyze",
+                        {
                             method: "POST",
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-                            body: JSON.stringify({
-                                filename: data.filename,
-                                is_fake: data.is_fake,
-                                confidence: data.confidence,
-                                details: data.details,
-                                reverse_search: data.reverse_search
-                            })
-                        });
+                            body: formData
+                        }
+                    );
 
-                    if (!reportResponse.ok) {
 
-                        const errorData =
-                            await reportResponse.json();
+                const data =
+                    await response.json();
 
-                        throw new Error(
-                            errorData.error ||
-                            "Report generation failed."
-                        );
-                    }
 
-                    const blob =
-                        await reportResponse.blob();
+                if (!response.ok) {
 
-                    const url =
-                        window.URL.createObjectURL(blob);
-
-                    const link =
-                        document.createElement("a");
-
-                    link.href = url;
-
-                    link.download =
-                        "DeepGuard_Analysis_Report.pdf";
-
-                    document.body.appendChild(link);
-
-                    link.click();
-
-                    link.remove();
-
-                    window.URL.revokeObjectURL(url);
-
-                } catch (error) {
-
-                    alert(error.message);
-
-                } finally {
-
-                    reportBtn.disabled = false;
-
-                    reportBtn.innerText =
-                        "📄 Generate Analysis Report";
+                    throw new Error(
+                        data.error ||
+                        "Analysis failed."
+                    );
 
                 }
 
-            });
 
-        } catch (error) {
+                let resultBox =
+                    document.getElementById(
+                        "analysisResult"
+                    );
 
-            alert(error.message);
 
-        } finally {
+                if (!resultBox) {
 
-            analyzeBtn.disabled = false;
-            analyzeBtn.innerText = "Analyze Image";
+                    resultBox =
+                        document.createElement(
+                            "div"
+                        );
+
+                    resultBox.id =
+                        "analysisResult";
+
+                    resultBox.style.marginTop =
+                        "30px";
+
+                    resultBox.style.padding =
+                        "25px";
+
+                    resultBox.style.borderRadius =
+                        "18px";
+
+                    resultBox.style.background =
+                        "rgba(255,255,255,.12)";
+
+                    resultBox.style.textAlign =
+                        "left";
+
+
+                    document
+                        .querySelector(
+                            ".upload-box"
+                        )
+                        .appendChild(
+                            resultBox
+                        );
+
+                }
+
+
+                resultBox.innerHTML = `
+
+                    <h2>
+                        🔎 Analysis Result
+                    </h2>
+
+                    <p>
+                        <strong>File:</strong>
+                        ${data.filename}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        ${
+                            data.is_fake
+                            ? "⚠️ Deepfake Detected"
+                            : "✅ Authentic"
+                        }
+                    </p>
+
+                    <p>
+                        <strong>Confidence:</strong>
+                        ${data.confidence}
+                    </p>
+
+                    <p>
+                        <strong>Details:</strong>
+                        ${data.details}
+                    </p>
+
+                    <hr
+                        style="
+                            margin:25px 0;
+                            opacity:0.3;
+                        "
+                    >
+
+                    <h3>
+                        🌐 Reverse Image Search
+                    </h3>
+
+                    <p>
+                        <strong>
+                            Matches Found:
+                        </strong>
+
+                        ${data.reverse_search.matches_found}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Digital Footprint:
+                        </strong>
+
+                        ${data.reverse_search.digital_footprint}
+                    </p>
+
+                    ${
+                        data.reverse_search.sources.length > 0
+                        ? `
+                            <h4>
+                                Places Where This Image Was Found
+                            </h4>
+
+                            ${data.reverse_search.sources.map(
+                                (source, index) => `
+
+                                    <div style="
+                                        margin:15px 0;
+                                        padding:15px;
+                                        border-radius:10px;
+                                        background:
+                                            rgba(
+                                                255,
+                                                255,
+                                                255,
+                                                .08
+                                            );
+                                    ">
+
+                                        <strong>
+                                            ${index + 1}.
+                                            ${source.title}
+                                        </strong>
+
+                                        <p>
+                                            Source:
+                                            ${source.source}
+                                        </p>
+
+                                        <a
+                                            href="${source.link}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            style="
+                                                color:#8ec5ff;
+                                            "
+                                        >
+                                            🔗 Open Source
+                                        </a>
+
+                                    </div>
+
+                                `
+                            ).join("")}
+
+                        `
+                        : `
+
+                            <p>
+                                No matching sources
+                                were found.
+                            </p>
+
+                        `
+                    }
+
+                    <button
+                        type="button"
+                        id="reportBtn"
+                        style="
+                            margin-top:20px;
+                            padding:12px 20px;
+                            border:none;
+                            border-radius:10px;
+                            cursor:pointer;
+                        "
+                    >
+
+                        📄 Generate Analysis Report
+
+                    </button>
+
+                `;
+
+
+                const reportBtn =
+                    document.getElementById(
+                        "reportBtn"
+                    );
+
+
+                reportBtn.addEventListener(
+                    "click",
+                    async () => {
+
+                        reportBtn.disabled =
+                            true;
+
+                        reportBtn.innerText =
+                            "Generating Report...";
+
+
+                        try {
+
+                            const reportResponse =
+                                await fetch(
+                                    "/api/report",
+                                    {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type":
+                                                "application/json"
+                                        },
+                                        body:
+                                            JSON.stringify({
+
+                                                filename:
+                                                    data.filename,
+
+                                                is_fake:
+                                                    data.is_fake,
+
+                                                confidence:
+                                                    data.confidence,
+
+                                                details:
+                                                    data.details,
+
+                                                reverse_search:
+                                                    data.reverse_search
+
+                                            })
+                                    }
+                                );
+
+
+                            if (!reportResponse.ok) {
+
+                                const errorData =
+                                    await reportResponse.json();
+
+                                throw new Error(
+                                    errorData.error ||
+                                    "Report generation failed."
+                                );
+
+                            }
+
+
+                            const blob =
+                                await reportResponse.blob();
+
+
+                            const url =
+                                window.URL.createObjectURL(
+                                    blob
+                                );
+
+
+                            const link =
+                                document.createElement(
+                                    "a"
+                                );
+
+
+                            link.href = url;
+
+
+                            link.download =
+                                "DeepGuard_Analysis_Report.pdf";
+
+
+                            document.body.appendChild(
+                                link
+                            );
+
+
+                            link.click();
+
+
+                            link.remove();
+
+
+                            window.URL.revokeObjectURL(
+                                url
+                            );
+
+
+                        }
+
+                        catch (error) {
+
+                            alert(
+                                error.message
+                            );
+
+                        }
+
+                        finally {
+
+                            reportBtn.disabled =
+                                false;
+
+                            reportBtn.innerText =
+                                "📄 Generate Analysis Report";
+
+                        }
+
+                    }
+                );
+
+
+            }
+
+            catch (error) {
+
+                alert(
+                    error.message
+                );
+
+            }
+
+            finally {
+
+                analyzeBtn.disabled =
+                    false;
+
+                analyzeBtn.innerText =
+                    "Analyze Image";
+
+            }
 
         }
-
-    });
+    );
 
 }
+
 </script>
+
 </body>
 </html>

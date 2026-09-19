@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Audit Logs - DeepGuard AI</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* HEADER */
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            border-bottom: 1px solid rgba(255,255,255,.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: #38bdf8;
+        }
+
+        nav a.active {
+            color: #38bdf8;
+            border-bottom: 2px solid #38bdf8;
+            padding-bottom: 5px;
+        }
+
+        /* TITLE */
+
+        .page-title {
+            text-align: center;
+            padding: 45px 8% 25px;
+        }
+
+        .page-title h1 {
+            font-size: 42px;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: rgba(255,255,255,.7);
+            font-size: 15px;
+        }
+
+        /* DAYS */
+
+        #allDaysView {
+            padding: 10px 5% 60px;
+        }
+
+        .days-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 15px 5px 25px;
+            scroll-behavior: smooth;
+        }
+
+        .days-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .days-container::-webkit-scrollbar-track {
+            background: rgba(255,255,255,.08);
+            border-radius: 20px;
+        }
+
+        .days-container::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,.35);
+            border-radius: 20px;
+        }
+
+        /* DAY CARD */
+
+        .day-card {
+            flex: 0 0 500px;
+            padding: 24px;
+            border-radius: 18px;
+            background: rgba(255,255,255,.10);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,.15);
+            box-shadow: 0 8px 30px rgba(0,0,0,.15);
+            transition: .3s;
+        }
+
+        .day-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,.14);
+        }
+
+        .day-card.today {
+            border: 1px solid #38bdf8;
+            box-shadow: 0 0 25px rgba(56,189,248,.15);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .day-name {
+            font-size: 21px;
+            font-weight: 600;
+        }
+
+        .day-date {
+            display: block;
+            margin-top: 3px;
+            font-size: 12px;
+            color: rgba(255,255,255,.6);
+        }
+
+        .today-badge {
+            background: #38bdf8;
+            padding: 5px 11px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        /* EVENTS HORIZONTAL */
+
+        .events-container {
+            display: flex;
+            gap: 18px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+
+        .events-container::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .events-container::-webkit-scrollbar-track {
+            background: rgba(255,255,255,.06);
+            border-radius: 10px;
+        }
+
+        .events-container::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,.3);
+            border-radius: 10px;
+        }
+
+        .event {
+            flex: 0 0 105px;
+            text-align: center;
+        }
+
+        .event-icon {
+            width: 42px;
+            height: 42px;
+            margin: 0 auto 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(56,189,248,.15);
+            border: 1px solid rgba(56,189,248,.5);
+            font-size: 18px;
+        }
+
+        .event-time {
+            display: block;
+            color: #7dd3fc;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .event-name {
+            display: block;
+            font-size: 11px;
+            color: rgba(255,255,255,.8);
+            line-height: 1.3;
+        }
+
+        /* BUTTON */
+
+        .view-day-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: #38bdf8;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .view-day-btn:hover {
+            background: white;
+            color: #2563eb;
+        }
+
+        /* FULL DAY */
+
+        #fullDayView {
+            display: none;
+            padding: 20px 8% 70px;
+        }
+
+        .full-day-box {
+            max-width: 900px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255,255,255,.10);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,.15);
+        }
+
+        .back-btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,.12);
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .back-btn:hover {
+            background: white;
+            color: #2563eb;
+        }
+
+        .full-day-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .full-day-header h2 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .full-day-header p {
+            color: rgba(255,255,255,.6);
+            font-size: 13px;
+        }
+
+        /* VERTICAL TIMELINE */
+
+        .timeline {
+            position: relative;
+            padding-left: 65px;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 18px;
+            top: 5px;
+            bottom: 5px;
+            width: 2px;
+            background: rgba(56,189,248,.35);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -65px;
+            top: 0;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1e40af;
+            border: 2px solid #38bdf8;
+            font-size: 16px;
+        }
+
+        .timeline-content {
+            padding: 18px;
+            border-radius: 13px;
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        .timeline-time {
+            color: #7dd3fc;
+            font-size: 12px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .timeline-content h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content p {
+            color: rgba(255,255,255,.65);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* FOOTER */
+
+        footer {
+            padding: 30px;
+            text-align: center;
+            background: #0f172a;
+        }
+
+        footer p {
+            color: rgba(255,255,255,.6);
+            font-size: 13px;
+        }
+
+        @media(max-width:768px) {
+
+            header {
+                padding: 18px 5%;
+            }
+
+            nav {
+                gap: 12px;
+            }
+
+            nav a {
+                font-size: 11px;
+            }
+
+            .page-title h1 {
+                font-size: 32px;
+            }
+
+            .day-card {
+                flex: 0 0 90%;
+            }
+
+            .full-day-box {
+                padding: 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🛡 DeepGuard AI
+    </div>
+
+    <nav>
+
+        <a href="dashboard.html">Home</a>
+
+        <a href="dashboard.html#upload">Upload</a>
+
+        <a href="#">Analysis</a>
+
+        <a href="audit.html" class="active">Audit Logs</a>
+
+        <a href="awareness.html">Awareness</a>
+
+    </nav>
+
+</header>
+
+
+<section class="page-title">
+
+    <h1>📋 Audit Logs</h1>
+
+    <p>
+        Track account, AI, search, and report activities
+    </p>
+
+</section>
+
+
+<!-- =========================
+     ALL DAYS
+========================= -->
+
+<section id="allDaysView">
+
+    <div class="days-container">
+
+
+        <!-- TODAY -->
+
+        <div class="day-card today">
+
+            <div class="day-header">
+
+                <div>
+
+                    <div class="day-name">
+                        Today
+                    </div>
+
+                    <span class="day-date">
+                        19 September 2026
+                    </span>
+
+                </div>
+
+                <span class="today-badge">
+                    TODAY
+                </span>
+
+            </div>
+
+
+            <div class="events-container">
+
+                <div class="event">
+                    <div class="event-icon">🔐</div>
+                    <span class="event-time">09:15 AM</span>
+                    <span class="event-name">Login</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">🖼️</div>
+                    <span class="event-time">09:22 AM</span>
+                    <span class="event-name">Image uploaded</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">🤖</div>
+                    <span class="event-time">09:24 AM</span>
+                    <span class="event-name">Image analyzed</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">🔎</div>
+                    <span class="event-time">09:30 AM</span>
+                    <span class="event-name">Reverse search</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">📄</div>
+                    <span class="event-time">09:35 AM</span>
+                    <span class="event-name">Report generated</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">⬇️</div>
+                    <span class="event-time">09:37 AM</span>
+                    <span class="event-name">Report downloaded</span>
+                </div>
+
+            </div>
+
+            <button class="view-day-btn" data-day="today">
+                View Full Day →
+            </button>
+
+        </div>
+
+
+        <!-- YESTERDAY -->
+
+        <div class="day-card">
+
+            <div class="day-header">
+
+                <div>
+
+                    <div class="day-name">
+                        Yesterday
+                    </div>
+
+                    <span class="day-date">
+                        18 September 2026
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="events-container">
+
+                <div class="event">
+                    <div class="event-icon">🔐</div>
+                    <span class="event-time">08:50 AM</span>
+                    <span class="event-name">Login</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">🖼️</div>
+                    <span class="event-time">09:03 AM</span>
+                    <span class="event-name">Image uploaded</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">🤖</div>
+                    <span class="event-time">09:15 AM</span>
+                    <span class="event-name">Image analyzed</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">📄</div>
+                    <span class="event-time">10:28 AM</span>
+                    <span class="event-name">Report generated</span>
+                </div>
+
+            </div>
+
+            <button class="view-day-btn" data-day="yesterday">
+                View Full Day →
+            </button>
+
+        </div>
+
+
+        <!-- 17 SEPTEMBER -->
+
+        <div class="day-card">
+
+            <div class="day-header">
+
+                <div>
+
+                    <div class="day-name">
+                        17 Sep
+                    </div>
+
+                    <span class="day-date">
+                        17 September 2026
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="events-container">
+
+                <div class="event">
+                    <div class="event-icon">🔐</div>
+                    <span class="event-time">10:12 AM</span>
+                    <span class="event-name">Login</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">🖼️</div>
+                    <span class="event-time">10:20 AM</span>
+                    <span class="event-name">Image uploaded</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">🤖</div>
+                    <span class="event-time">10:25 AM</span>
+                    <span class="event-name">Image analyzed</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">⬇️</div>
+                    <span class="event-time">10:40 AM</span>
+                    <span class="event-name">Report downloaded</span>
+                </div>
+
+            </div>
+
+            <button class="view-day-btn" data-day="17sep">
+                View Full Day →
+            </button>
+
+        </div>
+
+
+        <!-- 16 SEPTEMBER -->
+
+        <div class="day-card">
+
+            <div class="day-header">
+
+                <div>
+
+                    <div class="day-name">
+                        16 Sep
+                    </div>
+
+                    <span class="day-date">
+                        16 September 2026
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="events-container">
+
+                <div class="event">
+                    <div class="event-icon">🔐</div>
+                    <span class="event-time">09:05 AM</span>
+                    <span class="event-name">Login</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">🖼️</div>
+                    <span class="event-time">09:18 AM</span>
+                    <span class="event-name">Image uploaded</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">🤖</div>
+                    <span class="event-time">09:27 AM</span>
+                    <span class="event-name">Image analyzed</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">🔎</div>
+                    <span class="event-time">09:45 AM</span>
+                    <span class="event-name">Reverse search</span>
+                </div>
+
+            </div>
+
+            <button class="view-day-btn" data-day="16sep">
+                View Full Day →
+            </button>
+
+        </div>
+
+
+        <!-- 15 SEPTEMBER -->
+
+        <div class="day-card">
+
+            <div class="day-header">
+
+                <div>
+
+                    <div class="day-name">
+                        15 Sep
+                    </div>
+
+                    <span class="day-date">
+                        15 September 2026
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="events-container">
+
+                <div class="event">
+                    <div class="event-icon">🔐</div>
+                    <span class="event-time">08:55 AM</span>
+                    <span class="event-name">Login</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">🖼️</div>
+                    <span class="event-time">09:10 AM</span>
+                    <span class="event-name">Image uploaded</span>
+                </div>
+
+                <div class="event">
+                    <div class="event-icon">❌</div>
+                    <span class="event-time">09:14 AM</span>
+                    <span class="event-name">Analysis failed</span>
+                </div>
+
+            </div>
+
+            <button class="view-day-btn" data-day="15sep">
+                View Full Day →
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FULL DAY VIEW
+========================= -->
+
+<section id="fullDayView">
+
+    <div class="full-day-box">
+
+        <button class="back-btn" id="backBtn">
+            ← Back to all days
+        </button>
+
+        <div class="full-day-header">
+
+            <h2 id="fullDayTitle">
+                Today — 19 September 2026
+            </h2>
+
+            <p>
+                Detailed activity log for this day
+            </p>
+
+        </div>
+
+        <div class="timeline" id="timeline"></div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <h3>🛡 DeepGuard AI</h3>
+
+    <p>
+        AI Powered Deepfake Detection System
+    </p>
+
+    <br>
+
+    <p>
+        © 2026 All Rights Reserved
+    </p>
+
+</footer>
+<script>
+
+const daysContainer =
+    document.querySelector(".days-container");
+
+const allDaysView =
+    document.getElementById("allDaysView");
+
+const fullDayView =
+    document.getElementById("fullDayView");
+
+const fullDayTitle =
+    document.getElementById("fullDayTitle");
+
+const timeline =
+    document.getElementById("timeline");
+
+const backBtn =
+    document.getElementById("backBtn");
+
+
+const actionIcons = {
+
+    "Account created": "👤",
+    "User logged in": "🔐",
+    "Login failed": "⚠️",
+    "User logged out": "🚪",
+    "Profile updated": "👤",
+    "Password changed": "🔑",
+    "Account deleted": "🗑️",
+
+    "Image uploaded": "🖼️",
+    "Image analyzed": "🤖",
+    "Analysis failed": "❌",
+
+    "Reverse image search completed": "🔎",
+    "Reverse image search failed": "⚠️",
+
+    "Analysis report generated": "📄",
+    "Report downloaded": "⬇️",
+
+    "Activity history viewed": "📋"
+
+};
+
+
+const actionDescriptions = {
+
+    "Account created":
+        "A new DeepGuard AI account was created.",
+
+    "User logged in":
+        "User successfully logged into DeepGuard AI.",
+
+    "Login failed":
+        "A login attempt was unsuccessful.",
+
+    "User logged out":
+        "User logged out of DeepGuard AI.",
+
+    "Profile updated":
+        "Account profile information was updated.",
+
+    "Password changed":
+        "Account password was changed successfully.",
+
+    "Account deleted":
+        "The user account was deleted.",
+
+    "Image uploaded":
+        "An image was uploaded for AI analysis.",
+
+    "Image analyzed":
+        "AI deepfake analysis was completed successfully.",
+
+    "Analysis failed":
+        "The image analysis could not be completed.",
+
+    "Reverse image search completed":
+        "Reverse image search was completed successfully.",
+
+    "Reverse image search failed":
+        "Reverse image search could not be completed.",
+
+    "Analysis report generated":
+        "An analysis report was successfully generated.",
+
+    "Report downloaded":
+        "The analysis report download was initiated.",
+
+    "Activity history viewed":
+        "The activity history was opened."
+
+};
+
+
+let groupedActivities = {};
+
+
+function getIcon(action) {
+
+    return actionIcons[action] || "•";
+
+}
+
+
+function getDescription(action) {
+
+    return actionDescriptions[action] ||
+        "A project activity was recorded.";
+
+}
+
+
+function getDateKey(date) {
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(date.getMonth() + 1).padStart(2, "0");
+
+    const day =
+        String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+
+}
+
+
+function isToday(date) {
+
+    const today =
+        new Date();
+
+    return getDateKey(date) ===
+        getDateKey(today);
+
+}
+
+
+function isYesterday(date) {
+
+    const yesterday =
+        new Date();
+
+    yesterday.setDate(
+        yesterday.getDate() - 1
+    );
+
+    return getDateKey(date) ===
+        getDateKey(yesterday);
+
+}
+
+
+function getDayName(date) {
+
+    if (isToday(date)) {
+
+        return "Today";
+
+    }
+
+    if (isYesterday(date)) {
+
+        return "Yesterday";
+
+    }
+
+    return new Intl.DateTimeFormat(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short"
+        }
+    ).format(date);
+
+}
+
+
+function getFullDate(date) {
+
+    return new Intl.DateTimeFormat(
+        "en-IN",
+        {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        }
+    ).format(date);
+
+}
+
+
+function getTime(date) {
+
+    return new Intl.DateTimeFormat(
+        "en-IN",
+        {
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    ).format(date);
+
+}
+
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value;
+
+    return div.innerHTML;
+
+}
+
+
+async function loadActivities() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/activity",
+                {
+                    credentials: "same-origin"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Unable to load activity history."
+            );
+
+        }
+
+
+        groupedActivities = {};
+
+
+        data.activities.forEach(
+            activity => {
+
+                const date =
+                    new Date(
+                        activity.created_at
+                    );
+
+
+                const key =
+                    getDateKey(date);
+
+
+                if (!groupedActivities[key]) {
+
+                    groupedActivities[key] = {
+
+                        date: date,
+
+                        events: []
+
+                    };
+
+                }
+
+
+                groupedActivities[key].events.push({
+
+                    time:
+                        getTime(date),
+
+                    icon:
+                        getIcon(
+                            activity.action
+                        ),
+
+                    action:
+                        activity.action,
+
+                    description:
+                        getDescription(
+                            activity.action
+                        ),
+
+                    timestamp:
+                        date
+
+                });
+
+            }
+        );
+
+
+        renderDayCards();
+
+    }
+
+    catch (error) {
+
+        daysContainer.innerHTML = `
+
+            <p style="
+                width:100%;
+                text-align:center;
+                color:#fca5a5;
+            ">
+
+                ${escapeHTML(error.message)}
+
+            </p>
+
+        `;
+
+    }
+
+}
+
+
+function renderDayCards() {
+
+    daysContainer.innerHTML = "";
+
+
+    const days =
+        Object.entries(
+            groupedActivities
+        ).sort(
+            (a, b) =>
+                b[1].date - a[1].date
+        );
+
+
+    if (days.length === 0) {
+
+        daysContainer.innerHTML = `
+
+            <p style="
+                width:100%;
+                text-align:center;
+                color:rgba(255,255,255,.7);
+            ">
+
+                No activity recorded yet.
+
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+
+    days.forEach(
+        ([dateKey, dayData]) => {
+
+            const card =
+                document.createElement("div");
+
+
+            card.className =
+                "day-card";
+
+
+            if (isToday(dayData.date)) {
+
+                card.classList.add(
+                    "today"
+                );
+
+            }
+
+
+            const eventsHTML =
+                dayData.events.map(
+                    event => `
+
+                        <div class="event">
+
+                            <div class="event-icon">
+
+                                ${event.icon}
+
+                            </div>
+
+                            <span class="event-time">
+
+                                ${escapeHTML(
+                                    event.time
+                                )}
+
+                            </span>
+
+                            <span class="event-name">
+
+                                ${escapeHTML(
+                                    event.action
+                                )}
+
+                            </span>
+
+                        </div>
+
+                    `
+                ).join("");
+
+
+            card.innerHTML = `
+
+                <div class="day-header">
+
+                    <div>
+
+                        <div class="day-name">
+
+                            ${escapeHTML(
+                                getDayName(
+                                    dayData.date
+                                )
+                            )}
+
+                        </div>
+
+                        <span class="day-date">
+
+                            ${escapeHTML(
+                                getFullDate(
+                                    dayData.date
+                                )
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    ${
+                        isToday(dayData.date)
+                        ?
+                        `
+                        <span class="today-badge">
+
+                            TODAY
+
+                        </span>
+                        `
+                        :
+                        ""
+                    }
+
+                </div>
+
+
+                <div class="events-container">
+
+                    ${eventsHTML}
+
+                </div>
+
+
+                <button
+                    class="view-day-btn"
+                    data-day="${dateKey}">
+
+                    View Full Day →
+
+                </button>
+
+            `;
+
+
+            daysContainer.appendChild(
+                card
+            );
+
+        }
+    );
+
+
+    document
+        .querySelectorAll(".view-day-btn")
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        showFullDay(
+                            button.dataset.day
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+}
+
+
+function showFullDay(dateKey) {
+
+    const dayData =
+        groupedActivities[dateKey];
+
+
+    if (!dayData) {
+
+        return;
+
+    }
+
+
+    fullDayTitle.textContent =
+        `${getDayName(dayData.date)} — ${getFullDate(dayData.date)}`;
+
+
+    timeline.innerHTML = "";
+
+
+    dayData.events.forEach(
+        event => {
+
+            const item =
+                document.createElement("div");
+
+
+            item.className =
+                "timeline-item";
+
+
+            item.innerHTML = `
+
+                <div class="timeline-dot">
+
+                    ${event.icon}
+
+                </div>
+
+
+                <div class="timeline-content">
+
+                    <span class="timeline-time">
+
+                        ${escapeHTML(
+                            event.time
+                        )}
+
+                    </span>
+
+
+                    <h3>
+
+                        ${escapeHTML(
+                            event.action
+                        )}
+
+                    </h3>
+
+
+                    <p>
+
+                        ${escapeHTML(
+                            event.description
+                        )}
+
+                    </p>
+
+                </div>
+
+            `;
+
+
+            timeline.appendChild(
+                item
+            );
+
+        }
+    );
+
+
+    allDaysView.style.display =
+        "none";
+
+
+    fullDayView.style.display =
+        "block";
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+backBtn.addEventListener(
+    "click",
+    () => {
+
+        fullDayView.style.display =
+            "none";
+
+
+        allDaysView.style.display =
+            "block";
+
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior: "smooth"
+
+        });
+
+    }
+);
+
+
+loadActivities();
+
+</script>
+
+
+
+</body>
+
+</html>

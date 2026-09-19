@@ -2,7 +2,7 @@ import os
 import torch
 from dotenv import load_dotenv
 load_dotenv()
-from flask import Flask, render_template, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify, send_file, session
 from werkzeug.utils import secure_filename
 from PIL import Image
 from torchvision import transforms
@@ -12,9 +12,20 @@ from backend.image_uploader import upload_image
 
 from ai.models.model import DeepfakeDetector
 from backend.reverse_search import analyze_reverse_search
-from backend.auth import register_user, authenticate_user
+from backend.auth import (
+    register_user,
+    authenticate_user,
+    log_activity,
+    get_connection,
+    get_user_id_by_login,
+    update_user_profile,
+    change_user_password,
+    DatabaseUnavailableError
+)
 
 app = Flask(__name__, template_folder='frontend', static_folder='frontend')
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "deepguard-dev-key")
+
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -29,37 +40,73 @@ def register():
     if not username or not email or not password:
         return jsonify({"error": "All fields are required"}), 400
 
-    success, message = register_user(username, email, password)
+    try:
+        success, message = register_user(username, email, password)
 
-    if success:
+        if success:
+            return jsonify({
+                "status": "success",
+                "message": message
+            }), 201
+
         return jsonify({
-            "status": "success",
+            "status": "error",
             "message": message
-        }), 201
+        }), 409
 
-    return jsonify({
-        "status": "error",
-        "message": message
-    }), 409
+    except DatabaseUnavailableError:
+        return jsonify({
+            "status": "error",
+            "message": "Database is temporarily unavailable. Please try again later."
+        }), 503
+
 @app.route('/api/login', methods=['POST'])
 def login():
+
     data = request.get_json()
 
     if not data:
-        return jsonify({"error": "No login data provided"}), 400
+        return jsonify({
+            "error": "No login data provided"
+        }), 400
 
     login = data.get("login", "").strip()
     password = data.get("password", "")
 
     if not login or not password:
-        return jsonify({"error": "Username/email and password are required"}), 400
+        return jsonify({
+            "status": "error",
+            "message": "Username/email and password are required"
+        }), 400
 
-    user = authenticate_user(login, password)
+    try:
+
+        user = authenticate_user(
+            login,
+            password
+        )
+
+    except DatabaseUnavailableError:
+
+        return jsonify({
+            "status": "error",
+            "message":
+                "Database is temporarily unavailable. Please try again later."
+        }), 503
+
     if not user:
+
         return jsonify({
             "status": "error",
             "message": "Invalid email or password"
         }), 401
+
+    session["user_id"] = user["user_id"]
+
+    log_activity(
+        user["user_id"],
+        "User logged in"
+    )
 
     return jsonify({
         "status": "success",
@@ -368,11 +415,13 @@ def analyze_image():
         app.config['UPLOAD_FOLDER'],
         filename
     )
-
     file.save(
         filepath
     )
+    user_id = session.get("user_id")
 
+    if user_id:
+        log_activity(user_id, "Image uploaded")
     try:
 
         # ==============================
@@ -383,6 +432,11 @@ def analyze_image():
             filepath
         )
 
+        if user_id:
+            log_activity(
+                user_id,
+                "Image analyzed"
+            )
 
         # ==============================
         # UPLOAD IMAGE TO IMGBB
@@ -406,10 +460,26 @@ def analyze_image():
 
         if image_url:
 
-            reverse_result = analyze_reverse_search(
-                image_url
-            )
+            try:
+                reverse_result = analyze_reverse_search(
+                    image_url
+                )
 
+                if user_id:
+                    log_activity(
+                        user_id,
+                        "Reverse image search completed"
+                    )
+
+            except Exception:
+
+                if user_id:
+                    log_activity(
+                        user_id,
+                        "Reverse image search failed"
+                    )
+
+                raise
 
         # ==============================
         # RETURN COMPLETE RESULT
@@ -440,12 +510,83 @@ def analyze_image():
 
     except Exception as e:
 
+        if user_id:
+            log_activity(user_id, "Analysis failed")
+
         return jsonify({
 
             "error":
             f"Analysis failed: {str(e)}"
 
         }), 500
+
+@app.route('/api/activity', methods=['GET'])
+def get_activity():
+
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({
+            "error": "User not logged in"
+        }), 401
+
+    connection = None
+    cursor = None
+
+    try:
+
+        connection = get_connection()
+        cursor = connection.cursor(dictionary=True)
+
+        query = """
+            SELECT activity_id, action, created_at
+            FROM activity_log
+            WHERE user_id = %s
+            ORDER BY created_at DESC, activity_id DESC
+        """
+
+        cursor.execute(
+            query,
+            (user_id,)
+        )
+
+        activities = cursor.fetchall()
+
+        for activity in activities:
+
+            if activity["created_at"]:
+
+                activity["created_at"] = activity["created_at"].strftime(
+                    "%Y-%m-%dT%H:%M:%S"
+                )
+
+        return jsonify({
+            "status": "success",
+            "activities": activities
+        })
+
+    except DatabaseUnavailableError:
+
+        return jsonify({
+            "status": "error",
+            "message": "Database is temporarily unavailable. Please try again later."
+        }), 503
+
+    except Exception as e:
+
+        return jsonify({
+            "status": "error",
+            "message": "Unable to load activity history."
+        }), 500
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if connection:
+            connection.close()
+
 @app.route('/api/report', methods=['POST'])
 def generate_analysis_report():
 
@@ -457,6 +598,7 @@ def generate_analysis_report():
         }), 400
 
     try:
+
         report_path = generate_report(
             filename=data.get("filename", "Unknown"),
             is_fake=data.get("is_fake", False),
@@ -465,6 +607,19 @@ def generate_analysis_report():
             reverse_search=data.get("reverse_search")
         )
 
+        user_id = session.get("user_id")
+
+        if user_id:
+            log_activity(
+                user_id,
+                "Analysis report generated"
+            )
+
+            log_activity(
+                user_id,
+                "Report downloaded"
+            )
+
         return send_file(
             report_path,
             as_attachment=True,
@@ -472,6 +627,14 @@ def generate_analysis_report():
         )
 
     except Exception as e:
+
+        user_id = session.get("user_id")
+
+        if user_id:
+            log_activity(
+                user_id,
+                "Report generation failed"
+            )
 
         return jsonify({
             "error": str(e)
