@@ -246,11 +246,11 @@ Learn About Deepfakes
 
 <div class="upload-box">
 
-<input type="file">
+<input type="file" id="dashboardFile" accept="image/*">
 
 <br>
 
-<button>Analyze Image</button>
+<button type="button" id="analyzeBtn">Analyze Image</button>
 
 </div>
 
@@ -267,6 +267,244 @@ Learn About Deepfakes
 <p>© 2026 All Rights Reserved</p>
 
 </footer>
+<script>
+const dashboardFile = document.getElementById("dashboardFile");
+const analyzeBtn = document.getElementById("analyzeBtn");
 
+if (analyzeBtn) {
+
+    analyzeBtn.addEventListener("click", async () => {
+
+        if (!dashboardFile.files.length) {
+            alert("Please select an image first.");
+            return;
+        }
+
+        const file = dashboardFile.files[0];
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        analyzeBtn.disabled = true;
+        analyzeBtn.innerText = "Analyzing...";
+
+        try {
+
+            const response = await fetch("/api/analyze", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.error || "Analysis failed."
+                );
+            }
+
+            let resultBox =
+                document.getElementById("analysisResult");
+
+            if (!resultBox) {
+
+                resultBox =
+                    document.createElement("div");
+
+                resultBox.id =
+                    "analysisResult";
+
+                resultBox.style.marginTop = "30px";
+                resultBox.style.padding = "25px";
+                resultBox.style.borderRadius = "18px";
+                resultBox.style.background =
+                    "rgba(255,255,255,.12)";
+                resultBox.style.textAlign = "left";
+
+                document
+                    .querySelector(".upload-box")
+                    .appendChild(resultBox);
+            }
+
+            resultBox.innerHTML = `
+                <h2>🔎 Analysis Result</h2>
+
+                <p>
+                    <strong>File:</strong>
+                    ${data.filename}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    ${
+                        data.is_fake
+                        ? "⚠️ Deepfake Detected"
+                        : "✅ Authentic"
+                    }
+                </p>
+
+                <p>
+                    <strong>Confidence:</strong>
+                    ${data.confidence}
+                </p>
+
+                <p>
+                    <strong>Details:</strong>
+                    ${data.details}
+                </p>
+                <hr style="margin:25px 0; opacity:0.3;">
+
+                <h3>🌐 Reverse Image Search</h3>
+
+                <p>
+                <strong>Matches Found:</strong>
+                ${data.reverse_search.matches_found}
+                </p>
+
+                <p>
+                <strong>Digital Footprint:</strong>
+                ${data.reverse_search.digital_footprint}
+                </p>
+                ${data.reverse_search.sources.length > 0
+    ? `
+        <h4>Places Where This Image Was Found</h4>
+
+        ${data.reverse_search.sources.map((source, index) => `
+            <div style="
+                margin:15px 0;
+                padding:15px;
+                border-radius:10px;
+                background:rgba(255,255,255,.08);
+            ">
+
+                <strong>${index + 1}. ${source.title}</strong>
+
+                <p>
+                    Source: ${source.source}
+                </p>
+
+                <a
+                    href="${source.link}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="color:#8ec5ff;"
+                >
+                    🔗 Open Source
+                </a>
+
+                </div>
+                        `).join("")}
+                    `
+                    : `
+                        <p>
+                            No matching sources were found.
+                        </p>
+                    `
+                }
+                <button
+                    type="button"
+                    id="reportBtn"
+                    style="
+                        margin-top:20px;
+                        padding:12px 20px;
+                        border:none;
+                        border-radius:10px;
+                        cursor:pointer;
+                    "
+                >
+                    📄 Generate Analysis Report
+                </button>
+            `;
+
+            const reportBtn =
+                document.getElementById("reportBtn");
+
+            reportBtn.addEventListener("click", async () => {
+
+                reportBtn.disabled = true;
+                reportBtn.innerText =
+                    "Generating Report...";
+
+                try {
+
+                    const reportResponse =
+                        await fetch("/api/report", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body: JSON.stringify({
+                                filename: data.filename,
+                                is_fake: data.is_fake,
+                                confidence: data.confidence,
+                                details: data.details,
+                                reverse_search: data.reverse_search
+                            })
+                        });
+
+                    if (!reportResponse.ok) {
+
+                        const errorData =
+                            await reportResponse.json();
+
+                        throw new Error(
+                            errorData.error ||
+                            "Report generation failed."
+                        );
+                    }
+
+                    const blob =
+                        await reportResponse.blob();
+
+                    const url =
+                        window.URL.createObjectURL(blob);
+
+                    const link =
+                        document.createElement("a");
+
+                    link.href = url;
+
+                    link.download =
+                        "DeepGuard_Analysis_Report.pdf";
+
+                    document.body.appendChild(link);
+
+                    link.click();
+
+                    link.remove();
+
+                    window.URL.revokeObjectURL(url);
+
+                } catch (error) {
+
+                    alert(error.message);
+
+                } finally {
+
+                    reportBtn.disabled = false;
+
+                    reportBtn.innerText =
+                        "📄 Generate Analysis Report";
+
+                }
+
+            });
+
+        } catch (error) {
+
+            alert(error.message);
+
+        } finally {
+
+            analyzeBtn.disabled = false;
+            analyzeBtn.innerText = "Analyze Image";
+
+        }
+
+    });
+
+}
+</script>
 </body>
 </html>

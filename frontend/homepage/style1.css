@@ -126,19 +126,16 @@ body{
 
     max-width:1450px;
 
-    min-height:100vh;
+    min-height:auto;
 
     margin:auto;
 
     display:grid;
 
-    grid-template-columns:60% 40%;
-
-    gap:45px;
-
+    grid-template-columns:58% 42%;
+    gap:35px;
     align-items:center;
-
-    padding:40px 0;
+    padding:35px 0;
 
 }
 
@@ -213,7 +210,7 @@ body{
    Hero Content
 ========================================== */
 
-.hero-content{
+.hero-text{
 
     position:relative;
 
@@ -303,7 +300,7 @@ body{
 
     letter-spacing:1px;
 
-    margin-bottom:250px;
+    margin-bottom:120px;
 
 }
 
@@ -378,7 +375,7 @@ body{
     width:100%;
     max-width:460px;
 
-    margin:auto;
+    margin:30px auto;
 
     padding:45px 40px;
 
@@ -735,8 +732,7 @@ body{
     width:94%;
 
     max-width:1450px;
-
-    margin:-10px auto 35px;
+    margin:25px auto 45px;
 
     display:grid;
 
@@ -894,7 +890,7 @@ button:disabled{
 
     }
 
-    .hero-content{
+    .hero-text{
 
         max-width:100%;
 

@@ -35,7 +35,6 @@ if (password && toggle) {
 
 }
 
-
 // =============================
 // LOGIN BUTTON
 // =============================
@@ -61,20 +60,13 @@ if (form) {
 
         setTimeout(() => {
 
-            button.innerHTML = original;
+            window.location.href = "/frontend/dashboard.html";
 
-            button.disabled = false;
-
-            alert(
-                "Backend authentication will be connected here."
-            );
-
-        }, 1800);
+        }, 1000);
 
     });
 
 }
-
 
 // =============================
 // PAGE LOAD ANIMATION

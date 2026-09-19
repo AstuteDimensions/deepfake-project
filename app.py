@@ -1,18 +1,75 @@
 import os
 import torch
-from flask import Flask, render_template, request, jsonify
+from dotenv import load_dotenv
+load_dotenv()
+from flask import Flask, render_template, request, jsonify, send_file
 from werkzeug.utils import secure_filename
 from PIL import Image
 from torchvision import transforms
 from facenet_pytorch import MTCNN
+from backend.report_generator import generate_report
+from backend.image_uploader import upload_image
 
 from ai.models.model import DeepfakeDetector
 from backend.reverse_search import analyze_reverse_search
-
+from backend.auth import register_user, authenticate_user
 
 app = Flask(__name__, template_folder='frontend', static_folder='frontend')
+@app.route('/api/register', methods=['POST'])
+def register():
+    data = request.get_json()
 
+    if not data:
+        return jsonify({"error": "No registration data provided"}), 400
 
+    username = data.get("username", "").strip()
+    email = data.get("email", "").strip()
+    password = data.get("password", "")
+
+    if not username or not email or not password:
+        return jsonify({"error": "All fields are required"}), 400
+
+    success, message = register_user(username, email, password)
+
+    if success:
+        return jsonify({
+            "status": "success",
+            "message": message
+        }), 201
+
+    return jsonify({
+        "status": "error",
+        "message": message
+    }), 409
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "No login data provided"}), 400
+
+    login = data.get("login", "").strip()
+    password = data.get("password", "")
+
+    if not login or not password:
+        return jsonify({"error": "Username/email and password are required"}), 400
+
+    user = authenticate_user(login, password)
+    if not user:
+        return jsonify({
+            "status": "error",
+            "message": "Invalid email or password"
+        }), 401
+
+    return jsonify({
+        "status": "success",
+        "message": "Login successful",
+        "user": {
+            "user_id": user["user_id"],
+            "username": user["username"],
+            "email": user["email"]
+        }
+    })
 UPLOAD_FOLDER = 'assets/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -272,7 +329,7 @@ def predict_deepfake(image_path):
 def home():
 
     return render_template(
-        'analyze.html'
+        'homepage/index1.html'
     )
 
 
@@ -285,54 +342,78 @@ def home():
     '/api/analyze',
     methods=['POST']
 )
-
 def analyze_image():
-
 
     if 'file' not in request.files:
 
         return jsonify({
             "error":
             "No file part provided"
-        }),400
-
-
+        }), 400
 
     file = request.files['file']
-
 
     if file.filename == '':
 
         return jsonify({
             "error":
             "No selected file"
-        }),400
-
-
+        }), 400
 
     filename = secure_filename(
         file.filename
     )
-
 
     filepath = os.path.join(
         app.config['UPLOAD_FOLDER'],
         filename
     )
 
-
     file.save(
         filepath
     )
 
-
-
     try:
+
+        # ==============================
+        # AI DEEPFAKE ANALYSIS
+        # ==============================
 
         result = predict_deepfake(
             filepath
         )
 
+
+        # ==============================
+        # UPLOAD IMAGE TO IMGBB
+        # ==============================
+
+        image_url = upload_image(
+            filepath
+        )
+
+
+        # ==============================
+        # REVERSE IMAGE SEARCH
+        # ==============================
+
+        reverse_result = {
+            "matches_found": 0,
+            "digital_footprint": "UNAVAILABLE",
+            "sources": []
+        }
+
+
+        if image_url:
+
+            reverse_result = analyze_reverse_search(
+                image_url
+            )
+
+
+        # ==============================
+        # RETURN COMPLETE RESULT
+        # ==============================
 
         return jsonify({
 
@@ -342,33 +423,59 @@ def analyze_image():
             "filename":
             filename,
 
-
             "is_fake":
             result["is_fake"],
-
 
             "confidence":
             result["confidence"],
 
-
             "details":
-            result["details"]
+            result["details"],
+
+            "reverse_search":
+            reverse_result
 
         })
 
 
-
     except Exception as e:
-
 
         return jsonify({
 
             "error":
-            f"Model inference failed: {str(e)}"
+            f"Analysis failed: {str(e)}"
 
-        }),500
+        }), 500
+@app.route('/api/report', methods=['POST'])
+def generate_analysis_report():
 
+    data = request.get_json()
 
+    if not data:
+        return jsonify({
+            "error": "No analysis data provided."
+        }), 400
+
+    try:
+        report_path = generate_report(
+            filename=data.get("filename", "Unknown"),
+            is_fake=data.get("is_fake", False),
+            confidence=data.get("confidence", "Unknown"),
+            details=data.get("details", "No details available."),
+            reverse_search=data.get("reverse_search")
+        )
+
+        return send_file(
+            report_path,
+            as_attachment=True,
+            download_name="DeepGuard_Analysis_Report.pdf"
+        )
+
+    except Exception as e:
+
+        return jsonify({
+            "error": str(e)
+        }), 500
 
 
 

@@ -239,3 +239,11 @@ backend/reports/
 
 # VS Code settings (optional)
 .vscode/
+
+# Runtime-generated files
+assets/uploads/
+assets/reports/
+assets/debug_cropped.jpg
+
+# Temporary files
+query

@@ -41,17 +41,16 @@ const form = document.getElementById("loginForm");
 
 if (form) {
 
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
 
         e.preventDefault();
 
-        const username =
-            document.querySelector("input[type='text']").value.trim();
-
+        const login =
+            document.getElementById("login").value.trim();
         const passwordValue =
-            document.getElementById("password").value.trim();
+            document.getElementById("password").value;
 
-        if (username === "" || passwordValue === "") {
+        if (login === "" || passwordValue === "")  {
 
             alert("Please fill in all fields.");
 
@@ -62,29 +61,67 @@ if (form) {
         const button =
             document.querySelector(".login-btn");
 
-        const originalText =
-            button.innerHTML;
-
         button.disabled = true;
 
         button.innerHTML =
             '<i class="fa-solid fa-spinner fa-spin"></i> Signing In...';
 
-        setTimeout(() => {
+        try {
 
-            button.innerHTML = originalText;
+            const response = await fetch("/api/login", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    login: login,
+
+                    password: passwordValue
+
+                })
+
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+
+                window.location.href =
+                    "/frontend/dashboard.html";
+
+            }
+
+            else {
+
+                alert(data.message || "Login failed.");
+
+                button.disabled = false;
+
+                button.innerHTML =
+                    'Sign In <i class="fa-solid fa-arrow-right"></i>';
+
+            }
+
+        }
+
+        catch (error) {
+
+            alert("Unable to connect to the server.");
 
             button.disabled = false;
 
-            alert("Backend authentication will be connected here.");
+            button.innerHTML =
+                'Sign In <i class="fa-solid fa-arrow-right"></i>';
 
-        }, 1800);
+        }
 
     });
 
 }
-
-
 
 // =========================================
 // PAGE LOAD ANIMATION

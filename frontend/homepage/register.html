@@ -8,17 +8,13 @@
     <meta name="viewport"
     content="width=device-width, initial-scale=1.0">
 
-    <title>DeepGuard AI</title>
+    <title>Create Account - DeepGuard AI</title>
 
     <link rel="stylesheet"
     href="login.css">
 
-    <!-- Google Font -->
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
-
-    <!-- Font Awesome -->
 
     <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
@@ -30,9 +26,7 @@
 <div class="background">
 
     <span></span>
-
     <span></span>
-
     <span></span>
 
 </div>
@@ -91,76 +85,100 @@
 
     </section>
 
-    <!-- LOGIN -->
+    <!-- REGISTER -->
 
     <section class="login-card">
 
         <h2>
 
-            Welcome <span>Back</span>
+            Create <span>Account</span>
 
         </h2>
 
         <p class="subtitle">
 
-            Sign in to your DeepGuard AI account
+            Create your DeepGuard AI account
 
         </p>
 
-        <form id="loginForm">
+        <form id="registerForm">
 
-    <div class="input-box">
+            <div class="input-box">
 
-        <i class="fa-regular fa-user"></i>
+                <i class="fa-regular fa-user"></i>
 
-        <input
-    id="login"
-    type="text"
-    placeholder="Username or Email"
-    required>
+                <input
+                id="username"
+                type="text"
+                placeholder="Username"
+                required>
 
-    </div>
+            </div>
 
-    <div class="input-box">
+            <div class="input-box">
 
-        <i class="fa-solid fa-lock"></i>
+                <i class="fa-regular fa-envelope"></i>
 
-        <input
-        id="password"
-        type="password"
-        placeholder="Password"
-        required>
+                <input
+                id="email"
+                type="email"
+                placeholder="Email"
+                required>
 
-        <i
-        class="fa-solid fa-eye"
-        id="togglePassword">
-        </i>
+            </div>
 
-    </div>
+            <div class="input-box">
 
-    <button
-    type="submit"
-    class="login-btn">
+                <i class="fa-solid fa-lock"></i>
 
-        Sign In
+                <input
+                id="password"
+                type="password"
+                placeholder="Password"
+                required>
 
-        <i class="fa-solid fa-arrow-right"></i>
+                <i
+                class="fa-solid fa-eye"
+                id="togglePassword">
+                </i>
 
-    </button>
+            </div>
 
-    <p class="signup">
+            <div class="input-box">
 
-        Don't have an account?
+                <i class="fa-solid fa-lock"></i>
 
-        <a href="register.html">
+                <input
+                id="confirmPassword"
+                type="password"
+                placeholder="Confirm Password"
+                required>
 
-            Create Account
+            </div>
 
-        </a>
+            <button
+            type="submit"
+            class="login-btn">
 
-    </p>
+                Create Account
 
-</form>
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+            <p class="signup">
+
+                Already have an account?
+
+                <a href="login.html">
+
+                    Sign In
+
+                </a>
+
+            </p>
+
+        </form>
 
     </section>
 
@@ -177,10 +195,8 @@
                 <h4>AI Powered</h4>
 
                 <p>
-
                     Advanced deep learning
                     models
-
                 </p>
 
             </div>
@@ -196,10 +212,8 @@
                 <h4>Privacy First</h4>
 
                 <p>
-
                     Your data is secure
                     and encrypted
-
                 </p>
 
             </div>
@@ -215,10 +229,8 @@
                 <h4>Real-time Analysis</h4>
 
                 <p>
-
                     Get instant results with
                     high precision
-
                 </p>
 
             </div>
@@ -244,7 +256,7 @@
 
 </div>
 
-<script src="login.js"></script>
+<script src="register.js"></script>
 
 </body>
 
