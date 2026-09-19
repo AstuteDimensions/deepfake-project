@@ -329,7 +329,7 @@ def predict_deepfake(image_path):
 def home():
 
     return render_template(
-        'homepage/index1.html'
+        'homepage/login.html'
     )
 
 
